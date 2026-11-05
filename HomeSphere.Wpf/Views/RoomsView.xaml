@@ -1,0 +1,183 @@
+<UserControl x:Class="HomeSphere.Wpf.Views.RoomsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{StaticResource PanelSecondaryBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="14" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <ItemsControl ItemsSource="{Binding Rooms}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Tag="{Binding}"
+                                        Command="{Binding DataContext.SelectionnerPieceCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource RoomButtonStyle}"
+                                        Margin="8">
+
+                                    <StackPanel>
+                                        <Image Source="{Binding Image, Converter={StaticResource RoomImageConverter}}"
+                                               Width="48"
+                                               Height="48"
+                                               Stretch="Uniform"
+                                               Margin="0,0,0,10" />
+
+                                        <TextBlock Text="{Binding Nom}"
+                                                   Style="{StaticResource SectionTitleStyle}" />
+
+                                        <TextBlock Text="{Binding Equipements.Count, StringFormat='Équipements : {0}'}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                                    </StackPanel>
+
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="{Binding SelectedRoom.Nom, StringFormat='Équipements — {0}'}"
+                               Style="{StaticResource SectionTitleStyle}" />
+
+                    <ItemsControl ItemsSource="{Binding SelectedRoom.Equipements}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Tag="{Binding}"
+                                        Command="{Binding DataContext.SelectionnerEquipementCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource EquipmentButtonStyle}"
+                                        Margin="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="14" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="14" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <Image Source="{Binding Image, Converter={StaticResource EquipmentImageConverter}}"
+                                                   Grid.Column="0"
+                                                   Width="48"
+                                                   Height="48"
+                                                   Stretch="Uniform"
+                                                   Margin="0,0,0,10"
+                                                   Opacity="{Binding ImageOpacity}" />
+                                        </Grid>
+                                        <StackPanel Grid.Column="2"
+                                                    Orientation="Vertical"
+                                                    HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Nom}"
+                                                       Style="{StaticResource SectionTitleStyle}"
+                                                       HorizontalAlignment="Left" />
+
+                                            <TextBlock Text="{Binding Type}"
+                                                       Foreground="{StaticResource TextSecondaryBrush}" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Grid.Column="4">
+                                            <Ellipse Width="9"
+                                                     Height="9">
+                                                <Ellipse.Style>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Fill"
+                                                                Value="Red" />
+
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding EstAllume}"
+                                                                         Value="True">
+                                                                <Setter Property="Fill"
+                                                                        Value="LightGreen" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding EstCommandable}"
+                                                                         Value="False">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Collapsed" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Type}"
+                                                                         Value="Volet roulant">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Ellipse.Style>
+                                            </Ellipse>
+                                            <TextBlock Text="{Binding StatutTexte}"
+                                                       Grid.Column="4"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="10,0"
+                                                       Foreground="{StaticResource TextSecondaryBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text"
+                                                                Value="Éteint" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding EstAllume}"
+                                                                         Value="True">
+                                                                <Setter Property="Text"
+                                                                        Value="Allumé" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding EstCommandable}"
+                                                                         Value="False">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4"
+                                                    Orientation="Vertical"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center">
+
+                                            <TextBlock Text="{Binding Temperature, StringFormat={}{0:F1} °C}"
+                                                       FontSize="25"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       HorizontalAlignment="Right" />
+
+                                            <TextBlock Text="{Binding StatutConnexion}"
+                                                       HorizontalAlignment="Right"
+                                                       Foreground="{StaticResource TextSecondaryBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding EstCommandable}"
+                                                                         Value="False">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

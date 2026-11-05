@@ -1,0 +1,327 @@
+<UserControl x:Class="HomeSphere.Wpf.Views.EquipmentsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:HomeSphere.Wpf.Views"
+             xmlns:models="clr-namespace:HomeSphere.Core.Models;assembly=HomeSphere.Core">
+
+    <Grid Background="{StaticResource PanelSecondaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="14" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="14" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="150" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Contrôle des équipements"
+                       Grid.Column="0"
+                       Style="{StaticResource SectionTitleStyle}"
+                       VerticalAlignment="Center" />
+            <Border Grid.Column="2"
+                    Background="{StaticResource PanelBrush}"
+                    CornerRadius="8"
+                    Margin="0,0,0,8">
+                <TextBlock Text="Maison principale"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource TextPrimaryBrush}" />
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding Rooms}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Tag="{Binding}"
+                                Command="{Binding DataContext.SelectionnerPieceCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource RoomEquipementButtonStyle}"
+                                Margin="8">
+
+                            <StackPanel>
+                                <Image Source="{Binding Image, Converter={StaticResource RoomImageConverter}}"
+                                       Width="48"
+                                       Height="48"
+                                       Stretch="Uniform"
+                                       Margin="0,0,0,10" />
+
+                                <TextBlock Text="{Binding Nom}"
+                                           Style="{StaticResource SectionTitleStyle}" />
+
+                                <TextBlock Text="{Binding Equipements.Count, StringFormat='Équipements : {0}'}"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+        </Grid>
+        <StackPanel Grid.Row="4">
+            <TextBlock Text="{Binding SelectedRoom.Nom, StringFormat=' Pièce : {0}'}"
+                       Style="{StaticResource SectionTitleStyle}" />
+
+            <ItemsControl ItemsSource="{Binding SelectedRoom.Equipements}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Grid.Row="4"
+                                CornerRadius="8"
+                                Tag="{Binding}"
+                                Margin="10">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderThickness"
+                                            Value="2" />
+                                    <Setter Property="BorderBrush"
+                                            Value="{StaticResource PanelBrush}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource EquipmentActiveConverter}">
+                                                    <Binding Path="DataContext.SelectedEquipment"
+                                                             RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
+
+                                                    <Binding Path="." />
+                                                </MultiBinding>
+
+                                            </DataTrigger.Binding>
+
+                                            <Setter Property="BorderBrush"
+                                                    Value="BlueViolet" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="14" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="150" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Image Source="{Binding Image, Converter={StaticResource EquipmentImageConverter}}"
+                                       Grid.Column="0"
+                                       Width="48"
+                                       Height="48"
+                                       Stretch="Uniform"
+                                       Margin="0,0,0,10"
+                                       Opacity="{Binding ImageOpacity}" />
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Vertical">
+                                    <TextBlock Text="{Binding Nom}"
+                                               Style="{StaticResource SectionTitleStyle}"
+                                               HorizontalAlignment="Left" />
+
+                                    <TextBlock Text="{Binding Type}"
+                                               Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <Grid Grid.Column="3"
+                                      Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding StatutTexte}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Margin="10,0"
+                                               Foreground="{StaticResource TextSecondaryBrush}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text"
+                                                        Value="Éteint" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EstAllume}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="Allumé" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding EstCommandable}"
+                                                                 Value="False">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding EstCommandeMarcheArret}"
+                                                                 Value="False">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="3"
+                                                Orientation="Vertical"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+
+                                        <TextBlock Text="{Binding Temperature, StringFormat={}{0:F1} °C}"
+                                                   FontSize="25"
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                                   HorizontalAlignment="Right" />
+
+                                        <TextBlock Text="{Binding StatutConnexion}"
+                                                   HorizontalAlignment="Right"
+                                                   Foreground="{StaticResource TextSecondaryBrush}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EstCommandable}"
+                                                                     Value="False">
+                                                            <Setter Property="Visibility"
+                                                                    Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <!-- doit devenir rouge si éteint -->
+                                    <Button Command="{Binding DataContext.BasculerEquipementCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            Grid.Column="1"
+                                            Width="50"
+                                            Height="30"
+                                            Cursor="Hand"
+                                            BorderThickness="0"
+                                            Padding="0">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding EstCommandable}"
+                                                                       Value="True" />
+                                                            <Condition Binding="{Binding EstConnecte}"
+                                                                       Value="True" />
+                                                            <Condition Binding="{Binding EstCommandeMarcheArret}"
+                                                                       Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Fond"
+                                                        Background="Green"
+                                                        CornerRadius="15">
+
+                                                    <Ellipse x:Name="Commutateur"
+                                                             Width="30"
+                                                             Height="30"
+                                                             HorizontalAlignment="Left"
+                                                             Fill="LightGray" />
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding EstAllume}"
+                                                                 Value="False">
+                                                        <Setter TargetName="Fond"
+                                                                Property="Background"
+                                                                Value="Red" />
+                                                        <Setter TargetName="Commutateur"
+                                                                Property="HorizontalAlignment"
+                                                                Value="Right" />
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                                <ContentControl Grid.Row="1"
+                                                Grid.Column="2"
+                                                Grid.ColumnSpan="2"
+                                                Content="{Binding}"
+                                                Margin="0,8,10,4">
+
+                                    <ContentControl.Resources>
+                                        <DataTemplate DataType="{x:Type models:VoletRoulant}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="65" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="65" />
+                                                    <ColumnDefinition Width="60" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Grid.Column="0"
+                                                        Content="Fermer"
+                                                        Margin="0,0,10,0"
+                                                        Command="{Binding DataContext.FermerVoletCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+
+                                                <Slider Grid.Column="1"
+                                                        Minimum="0"
+                                                        Maximum="100"
+                                                        TickFrequency="5"
+                                                        IsSnapToTickEnabled="True"
+                                                        Value="{Binding Ouverture, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="10,0" />
+
+                                                <Button Grid.Column="2"
+                                                        Content="Ouvrir"
+                                                        Margin="10,0,0,0"
+                                                        Command="{Binding DataContext.OuvrirVoletCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}" />
+
+                                                <TextBlock Grid.Column="3"
+                                                           Text="{Binding Ouverture, StringFormat={}{0} %}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Right"
+                                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Type}"
+                                                             Value="Volet roulant">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

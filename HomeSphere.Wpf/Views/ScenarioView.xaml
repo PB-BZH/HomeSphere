@@ -1,0 +1,217 @@
+<UserControl x:Class="HomeSphere.Wpf.Views.ScenarioView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:HomeSphere.Wpf.Views">
+
+    <Grid Background="{StaticResource PanelSecondaryBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Conteneur général -->
+        <Border Grid.Row="0"
+                Background="{StaticResource PanelBrush}"
+                CornerRadius="12"
+                Margin="10"
+                Padding="14">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- En-tête -->
+                <Grid Margin="0,0,0,14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="Scénarios"
+                               Style="{StaticResource SectionTitleStyle}"
+                               VerticalAlignment="Center" />
+
+                    <Border Grid.Column="1"
+                            Background="{StaticResource PanelBorderBrush}"
+                            VerticalAlignment="Center"
+                            CornerRadius="12"
+                            Padding="8,4">
+                        <Button Content="+ Ajouter un scénario"
+                                VerticalAlignment="Center"
+                                BorderThickness="0"
+                                Background="{StaticResource PanelBorderBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Command="{Binding AjouterScenarioCommand}" />
+                    </Border>
+                </Grid>
+
+                <!-- Liste des scénarios -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+
+                    <ItemsControl ItemsSource="{Binding Scenarios}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+
+                                <!-- Carte d'un scénario -->
+                                <Border Background="{StaticResource PanelBorderBrush}"
+                                        CornerRadius="10"
+                                        Margin="0,0,0,10"
+                                        Padding="12">
+
+                                    <StackPanel>
+
+                                        <!-- Nom et description -->
+                                        <Grid Margin="0,0,0,16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="48" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Icône provisoire -->
+                                            <Border Grid.Column="0"
+                                                    Background="{StaticResource PanelBrush}"
+                                                    Width="44"
+                                                    Height="44"
+                                                    CornerRadius="10">
+
+                                                <TextBlock Text="{Binding Scenario.Icone}"
+                                                           FontSize="28"
+                                                           Foreground="{Binding Scenario.CouleurIcone}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="10,0,0,0"
+                                                        VerticalAlignment="Center">
+
+                                                <TextBlock Text="{Binding Scenario.Nom}"
+                                                           FontSize="16"
+                                                           FontWeight="Bold"
+                                                           Foreground="{StaticResource TextPrimaryBrush}" />
+
+                                                <TextBlock Text="{Binding Scenario.Description}"
+                                                           FontSize="12"
+                                                           Margin="0,6,0,0"
+                                                           TextWrapping="Wrap"
+                                                           Foreground="{StaticResource TextSecondaryBrush}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,0,0">
+                                                <Border Grid.Column="2"
+                                                        Background="{StaticResource PanelBrush}"
+                                                        Width="auto"
+                                                        Height="32"
+                                                        Margin="0,0,10,0"
+                                                        Padding="5,0,5,0"
+                                                        CornerRadius="8">
+                                                    <Button Content="🗑"
+                                                            FontSize="14"
+                                                            Background="{StaticResource PanelBrush}"
+                                                            Foreground="{StaticResource TextPrimaryBrush}"
+                                                            BorderThickness="0"
+                                                            Cursor="Hand"
+                                                            Margin="0,0,10,0"
+                                                            HorizontalAlignment="Center"
+                                                            Command="{Binding DataContext.SupprimerScenarioCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                </Border>
+                                                <Border Grid.Column="2"
+                                                        Background="{StaticResource PanelBrush}"
+                                                        Width="auto"
+                                                        Height="32" Margin="10,0,0,0" Padding="5,0,5,0"
+                                                        CornerRadius="8">
+                                                    <Button Content="✎"
+                                                            FontSize="14"
+                                                            Background="{StaticResource PanelBrush}"
+                                                            Foreground="{StaticResource TextPrimaryBrush}"
+                                                            BorderThickness="0"
+                                                            Cursor="Hand"
+                                                            Margin="10,0,0,0"
+                                                            Command="{Binding DataContext.ModifierScenarioCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!-- Séparation -->
+                                        <Border Height="1"
+                                                Background="{StaticResource PanelBrush}"
+                                                Margin="0,0,0,14" />
+
+                                        <!-- Informations -->
+                                        <Grid Margin="0,0,0,14">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0"
+                                                       Grid.Column="0"
+                                                       Text="Actions configurées"
+                                                       Margin="0,8"
+                                                       Foreground="{StaticResource TextSecondaryBrush}" />
+
+                                            <TextBlock Grid.Row="0"
+                                                       Grid.Column="1"
+                                                       Text="{Binding Scenario.Description}"
+                                                       Margin="0,8"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}" />
+
+                                            <TextBlock Grid.Row="1"
+                                                       Grid.Column="0"
+                                                       Text="Exécution"
+                                                       Margin="0,8"
+                                                       Foreground="{StaticResource TextSecondaryBrush}" />
+
+                                            <TextBlock Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       Text="Manuelle"
+                                                       Margin="0,8"
+                                                       Foreground="LightGreen" />
+                                        </Grid>
+
+                                        <!-- Exécution -->
+                                        <Button Content="▶  Exécuter le scénario"
+                                                Height="48"
+                                                Background="#2563EB"
+                                                Foreground="White"
+                                                FontWeight="Bold"
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                Command="{Binding DataContext.ExecuterScenarioCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}" />
+                                        <TextBlock Text="{Binding MessageExecution}"
+                                                   Foreground="LightGreen"
+                                                   FontSize="13"
+                                                   Margin="0,10,0,0"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Border>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

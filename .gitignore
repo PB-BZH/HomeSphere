@@ -1,0 +1,12 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Compilation .NET
+**/bin/
+**/obj/
+
+# Fichiers temporaires
+*.tmp
+*.log

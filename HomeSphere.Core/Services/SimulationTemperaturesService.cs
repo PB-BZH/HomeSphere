@@ -28,7 +28,6 @@ public class SimulationTemperaturesService {
 
     double tempMax = tempRef + threshold;
     double tempMin = tempRef - threshold;
-
     if (temperature >= tempMax)
       thermometre.TemperatureMonte = false;
     else if (temperature <= tempMin)

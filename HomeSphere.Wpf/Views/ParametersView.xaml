@@ -85,7 +85,7 @@
                                 </Border>
 
                                 <ControlTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding SimulationActive}"
+                                    <DataTrigger Binding="{Binding SimulatioActive}"
                                                  Value="False">
                                         <Setter TargetName="Fond"
                                                 Property="Background"

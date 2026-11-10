@@ -16,6 +16,12 @@ public partial class ScenarioViewModel: ObservableObject {
   public partial Scenario? SelectedScenario { get; set; }
   private readonly Action<Scenario?> _ouvrirEditeurScenario;
 
+  public ScenarioViewModel(ScenarioService scenarioService,Action<Scenario?> ouvrirEditeurScenario) {
+    _scenarioService = scenarioService;
+    _ouvrirEditeurScenario = ouvrirEditeurScenario;
+    Scenarios = new ObservableCollection<ScenarioItemViewModel>(_scenarioService.Scenarios.Select(s => new ScenarioItemViewModel(s)));
+  }
+
   [RelayCommand]
   private void ExecuterScenario(ScenarioItemViewModel item) {
     foreach (var scenario in Scenarios)
@@ -27,12 +33,6 @@ public partial class ScenarioViewModel: ObservableObject {
       item.MessageExecution = $"Scénario exécuté : {resultat.ActionsAppliquees} action(s) appliquée(s).";
     else
       item.MessageExecution = $"Exécution partielle : {resultat.ActionsAppliquees} appliquée(s), {resultat.ActionsIgnorees} ignorée(s).";
-  }
-
-  public ScenarioViewModel(ScenarioService scenarioService,Action<Scenario?> ouvrirEditeurScenario) {
-    _scenarioService = scenarioService;
-    _ouvrirEditeurScenario = ouvrirEditeurScenario;
-    Scenarios = new ObservableCollection<ScenarioItemViewModel>(_scenarioService.Scenarios.Select(s => new ScenarioItemViewModel(s)));
   }
 
   [RelayCommand]

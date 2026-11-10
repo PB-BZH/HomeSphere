@@ -10,121 +10,13 @@ public static class MaisonVirtuelleFactory {
 
     Maison maison = new() {
       Nom = "Maison principale",
-      Adresse = "Adresse fictive"
+      Adresse = "App 1, 7 rue Général Gouraud, 29200 BREST"
     };
+    maison.Id = CreerGuidStable(maison.Adresse);
 
     Piece salon = new() {
       Nom = "Salon",
       Image = "salon.png"
-    };
-
-    Equipement lampeSalon = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/LampePrincipale"),
-      Nom = "Lampe principale",
-      Type = "Éclairage",
-      Image = "ampoule.png",
-      EstCommandable = true,
-      EstConnecte = true,
-      EstAllume = true
-    };
-
-    Equipement lampeBureau = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Bureau/LampeBureau"),
-      Nom = "Lampe bureau",
-      Type = "Éclairage",
-      Image = "ampoule.png",
-      EstCommandable = true,
-      EstConnecte = true,
-      EstAllume = true
-    };
-
-    Equipement lampeCuisine = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Cuisine/LampeCuisine"),
-      Nom = "Éclairage cuisine",
-      Type = "Éclairage",
-      Image = "ampoule.png",
-      EstCommandable = true,
-      EstConnecte = true,
-      EstAllume = true
-    };
-
-    Equipement lampeChambre = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Chambre/LampeChambre"),
-      Nom = "Éclairage chambre",
-      Type = "Éclairage",
-      Image = "ampoule.png",
-      EstCommandable = true,
-      EstConnecte = true,
-      EstAllume = true
-    };
-
-    Thermometre thermometreCuisine = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Cuisine/ThermometreCuisine"),
-      Nom = "Thermometre cuisine",
-      Type = "Mesure temperature",
-      TemperatureReference = 21.5,
-      Temperature = 21.5
-    };
-
-    Thermometre thermometreSalon = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/ThermometreSalon"),
-      Nom = "Thermometre salon",
-      Type = "Mesure temperature",
-      Temperature = 18.5,
-      TemperatureReference = 18.5,
-    };
-
-    Thermometre thermometreChambre = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Chambre/ThermometreChambre"),
-      Nom = "Thermometre chambre",
-      Type = "Mesure temperature",
-      TemperatureReference = 18.0,
-      Temperature = 18.0
-    };
-
-    Thermometre thermometreBureau = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Bureau/ThermometreBureau"),
-      Nom = "Thermometre bureau",
-      Type = "Mesure temperature",
-      TemperatureReference = 20.0,
-      Temperature = 20.0
-    };
-
-    Equipement priseCuisine = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Cuisine/PriseCuisine"),
-      Nom = "Prise cuisine",
-      EstCommandable = true,
-      EstConnecte = true,
-      Type = "Prise de courant",
-      Image = "prise.png"
-    };
-
-    Equipement priseBureau = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Bureau/PriseBureau"),
-      Nom = "Prise bureau",
-      Type = "Prise de courant",
-      Image = "prise.png",
-      EstCommandable = true,
-      EstConnecte = true,
-    };
-
-    Equipement priseSalon = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/PriseSalon"),
-      Nom = "Prise salon",
-      Type = "Prise de courant",
-      Image = "prise.png",
-      EstCommandable = true,
-      EstConnecte = true,
-    };
-
-    Equipement priseChambre = new() {
-      Id = CreerGuidStable("MaisonPrincipale/Chambre/PriseChambre"),
-      Nom = "Prise chambre",
-      Type = "Prise de courant",
-      EstCommandable = true,
-      Image = "prise.png",
-      EstConnecte = true,
-      EstAllume = true,
     };
 
     Piece cuisine = new() {
@@ -142,6 +34,127 @@ public static class MaisonVirtuelleFactory {
       Image = "chambre.png"
     };
 
+    Lampe lampeSalon = new() {
+      Nom = "Lampe principale",
+      Type = "Éclairage",
+      Image = "ampoule.png",
+      EstCommandable = true,
+      EstConnecte = true,
+      EstAllume = true
+    };
+
+    Lampe lampeBureau = new() {
+      Nom = "Lampe bureau",
+      Type = "Éclairage",
+      Image = "ampoule.png",
+      EstCommandable = true,
+      EstConnecte = true,
+      EstAllume = true
+    };
+
+    Lampe lampeCuisine = new() {
+      Nom = "Éclairage cuisine",
+      Type = "Éclairage",
+      Image = "ampoule.png",
+      EstCommandable = true,
+      EstConnecte = true,
+      EstAllume = true
+    };
+
+    Lampe lampeChambre = new() {
+      Nom = "Éclairage chambre",
+      Type = "Éclairage",
+      Image = "ampoule.png",
+      EstCommandable = true,
+      EstConnecte = true,
+      EstAllume = true
+    };
+
+    Thermometre thermometreCuisine = new() {
+      Nom = "Thermometre cuisine",
+      Type = "Mesure temperature",
+      TemperatureReference = 21.5,
+      Temperature = 21.5
+    };
+
+    Thermometre thermometreSalon = new() {
+      Nom = "Thermometre salon",
+      Type = "Mesure temperature",
+      Temperature = 18.5,
+      TemperatureReference = 18.5,
+    };
+
+    Thermometre thermometreChambre = new() {
+      Nom = "Thermometre chambre",
+      Type = "Mesure temperature",
+      TemperatureReference = 18.0,
+      Temperature = 18.0
+    };
+
+    Thermometre thermometreBureau = new() {
+      Nom = "Thermometre bureau",
+      Type = "Mesure temperature",
+      TemperatureReference = 20.0,
+      Temperature = 20.0
+    };
+
+    Prise priseCuisine = new() {
+      Nom = "Prise cuisine",
+      EstCommandable = true,
+      EstConnecte = true,
+      Type = "Prise de courant",
+      Image = "prise.png"
+    };
+
+    Prise priseBureau = new() {
+      Nom = "Prise bureau",
+      Type = "Prise de courant",
+      Image = "prise.png",
+      EstCommandable = true,
+      EstConnecte = true,
+    };
+
+    Prise priseSalon = new() {
+      Nom = "Prise salon",
+      Type = "Prise de courant",
+      Image = "prise.png",
+      EstCommandable = true,
+      EstConnecte = true,
+    };
+
+    Prise priseChambre = new() {
+      Nom = "Prise chambre",
+      Type = "Prise de courant",
+      EstCommandable = true,
+      Image = "prise.png",
+      EstConnecte = true,
+      EstAllume = true,
+    };
+
+    VoletRoulant voletRoulantSalon = new() {
+      Nom = "Volet roulant salon",
+      Ouverture = 50,
+      Image = "volet.png"
+    };
+
+    VoletRoulant voletRoulantCuisine = new() {
+      Nom = "Volet roulant cuisine",
+      Ouverture = 50,
+      Image = "volet.png"
+    };
+
+    VoletRoulant voletRoulantBureau = new() {
+      Nom = "Volet roulant bureau",
+      Ouverture = 50,
+      Image = "volet.png"
+    };
+
+    VoletRoulant voletRoulantChambre = new() {
+      Nom = "Volet roulant chambre",
+      Ouverture = 50,
+      Image = "volet.png"
+    };
+
     salon.Equipements.Add(lampeSalon);
     salon.Equipements.Add(thermometreSalon);
     salon.Equipements.Add(priseSalon);
@@ -154,34 +167,23 @@ public static class MaisonVirtuelleFactory {
     chambre.Equipements.Add(lampeChambre);
     chambre.Equipements.Add(priseChambre);
     chambre.Equipements.Add(thermometreChambre);
-    salon.Equipements.Add(new VoletRoulant {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/VoletRoulant"),
-      Nom = "Volet roulant salon",
-      Ouverture = 50,
-      Image = "volet.png"
-    });
-    chambre.Equipements.Add(new VoletRoulant {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/VoletRoulant"),
-      Nom = "Volet roulant chambre",
-      Ouverture = 50,
-      Image = "volet.png"
-    });
-    bureau.Equipements.Add(new VoletRoulant {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/VoletRoulant"),
-      Nom = "Volet roulant bureau",
-      Ouverture = 50,
-      Image = "volet.png"
-    });
-    cuisine.Equipements.Add(new VoletRoulant {
-      Id = CreerGuidStable("MaisonPrincipale/Salon/VoletRoulant"),
-      Nom = "Volet roulant cuisine",
-      Ouverture = 50,
-      Image = "volet.png"
-    });
+    salon.Equipements.Add(voletRoulantSalon);
+    chambre.Equipements.Add(voletRoulantChambre);
+    bureau.Equipements.Add(voletRoulantBureau);
+    cuisine.Equipements.Add(voletRoulantCuisine);
     maison.Pieces.Add(bureau);
     maison.Pieces.Add(salon);
     maison.Pieces.Add(chambre);
     maison.Pieces.Add(cuisine);
+
+    foreach (Piece piece in maison.Pieces) {
+      string key1 = $"{maison.Id}/{piece.Nom}";
+      piece.Id = CreerGuidStable(key1);
+      foreach (Equipement equipement in piece.Equipements) {
+        string key2 = $"{piece.Id}/{equipement.Nom}";
+        equipement.Id = CreerGuidStable(key2);
+      }
+    }
 
     return maison;
   }

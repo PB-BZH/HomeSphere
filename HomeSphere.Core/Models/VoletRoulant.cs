@@ -11,6 +11,8 @@ public partial class VoletRoulant: Equipement {
   public override double ImageOpacity => EstConnecte ? 1.0 : 0.35;
   public string StatutOuverture => $"{Ouverture}%";
   public override string StatutTexte => Ouverture == 0 ? "Fermé" : (Ouverture == 100 ? "Ouvert" : $"Ouvert à {Ouverture}%");
+  public override double Puissance => 0;
+
   public VoletRoulant() {
     Type = "Volet roulant";
     EstCommandable = true;

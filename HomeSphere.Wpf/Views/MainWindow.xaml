@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         Title="HomeSphere Studio"
         MinHeight="700"
-        MinWidth="1100">
+        MinWidth="1100"
+        Closing="Window_Closing">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">

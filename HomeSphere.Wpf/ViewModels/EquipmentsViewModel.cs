@@ -1,16 +1,19 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HomeSphere.Core.Models;
+using HomeSphere.Core.Services;
 
 namespace HomeSphere.Wpf.ViewModels;
 
 public partial class EquipmentsViewModel: ObservableObject {
   public string Titre { get; } = "Equipements";
   private readonly Core.HomeSphere _homeSphere;
+  private readonly EnergieService _energieService;
   public Maison MaisonPrincipale => _homeSphere.maisons[0];
   public List<Piece> Rooms => MaisonPrincipale.Pieces;
   public EquipmentsViewModel(Core.HomeSphere homeSphere) {
     _homeSphere = homeSphere;
+    _energieService = new(_homeSphere);
   }
 
   [ObservableProperty]

@@ -8,27 +8,22 @@ public class ScenarioService {
   private readonly HomeSphere _homeSphere;
   public List<Scenario> Scenarios { get; set; } = [];
   private ActionScenario? _selectedActionScenario { get; set; }
+  private readonly string _dossierSauvegarde;
+  private string CheminFichierScenarios => Path.Combine(_dossierSauvegarde,"scenarios.json");
 
-  public ScenarioService(HomeSphere homeSphere) {
+  public ScenarioService(HomeSphere homeSphere,string? dossierSauvegarde = null) {
     _homeSphere = homeSphere;
-    if (File.Exists(CheminFichierScenarios)) {
+    _dossierSauvegarde = dossierSauvegarde ??
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"HomeSphere");
+
+    Directory.CreateDirectory(_dossierSauvegarde);
+
+    if (File.Exists(CheminFichierScenarios))
       ChargerScenarios();
-    }
     else {
       Scenarios.Add(CreerScenarioBonneNuit());
       Scenarios.Add(CreerScenarioBonjour());
       SauvegarderScenarios();
-    }
-  }
-
-  private string CheminFichierScenarios {
-    get {
-      string dossierAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-      string dossierHomeSphere = Path.Combine(dossierAppData,"HomeSphere");
-
-      Directory.CreateDirectory(dossierHomeSphere);
-
-      return Path.Combine(dossierHomeSphere,"scenarios.json");
     }
   }
 
@@ -82,6 +77,14 @@ public class ScenarioService {
 
     var actionsLampes = equipements
         .Where(e => e.EstCommandable && e.Type == "Éclairage")
+        .Select(e => new ActionScenario {
+          EquipementId = e.Id,
+          TypeAction = TypeActionScenario.MarcheArret,
+          EtatSouhaite = false
+        });
+
+    var actionsPrises = equipements
+        .Where(e => e.EstCommandable && e.Type == "Prise de courant")
         .Select(e => new ActionScenario {
           EquipementId = e.Id,
           TypeAction = TypeActionScenario.MarcheArret,

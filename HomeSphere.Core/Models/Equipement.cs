@@ -12,11 +12,13 @@ public partial class Equipement: ObservableObject {
   [ObservableProperty]
   [NotifyPropertyChangedFor(nameof(ImageOpacity))]
   [NotifyPropertyChangedFor(nameof(StatutConnexion))]
+  [NotifyPropertyChangedFor(nameof(Puissance))]
   public partial bool EstConnecte { get; set; }
 
   [ObservableProperty]
   [NotifyPropertyChangedFor(nameof(StatutTexte))]
   [NotifyPropertyChangedFor(nameof(ImageOpacity))]
+  [NotifyPropertyChangedFor(nameof(Puissance))]
   public partial bool EstAllume { get; set; }
 
   public virtual string StatutTexte => EstAllume ? "Allumé" : "Éteint";
@@ -24,4 +26,5 @@ public partial class Equipement: ObservableObject {
   public bool EstCommandable { get; set; }
   public string StatutConnexion => EstConnecte ? "Connecté" : "Déconnecté";
   public virtual bool EstCommandeMarcheArret => true;
+  public virtual double Puissance => 0;
 }

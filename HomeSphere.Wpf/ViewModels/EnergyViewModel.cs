@@ -2,6 +2,7 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HomeSphere.Core.Models;
 using HomeSphere.Core.Services;
+using Microsoft.Win32;
 
 namespace HomeSphere.Wpf.ViewModels;
 
@@ -37,6 +38,10 @@ public partial class EnergyViewModel: ObservableObject {
     foreach (Equipement equipement in homeSphere.maisons.SelectMany(m => m.Pieces).SelectMany(p => p.Equipements)) {
       equipement.PropertyChanged += Equipement_PropertyChanged;
     }
+  }
+
+  private void SystemEvents_PowerModeChanged(object sender,PowerModeChangedEventArgs e) {
+    throw new NotImplementedException();
   }
 
   internal void ActualiserPuissance() {

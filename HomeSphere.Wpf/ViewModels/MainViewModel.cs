@@ -3,10 +3,12 @@ using System.Windows;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HomeSphere.Core.Enums;
 using HomeSphere.Core.Models;
 using HomeSphere.Core.Services;
 using HomeSphere.Wpf.Services;
 using HomeSphere.Wpf.Views;
+using Microsoft.Win32;
 
 namespace HomeSphere.Wpf.ViewModels;
 
@@ -24,6 +26,7 @@ public partial class MainViewModel: ObservableObject {
   private readonly ParametersViewModel _parametersViewModel;
   private readonly ScenarioService _scenarioService;
   private readonly EnergieService _energieService;
+  private readonly HistoriqueEnergieService _historiqueEnergieService;
 
   [ObservableProperty]
   public partial string CurrentPage { get; set; } = "Dashboard";
@@ -48,9 +51,12 @@ public partial class MainViewModel: ObservableObject {
     }
     _energyViewModel = new(_homeSphere,_energieService);
     _scenarioService = new(_homeSphere,dossierSauvegarde);
-    _historyViewModel = new(_homeSphere);
+    _historiqueEnergieService = new(_energieService,dossierSauvegarde: dossierSauvegarde);
+    _historyViewModel = new(_homeSphere,_historiqueEnergieService);
     _equipmentsViewModel = new(_homeSphere);
     _scenarioViewModel = new(_scenarioService,OuvrirEditeurScenario);
+    SystemEvents.PowerModeChanged += PowerModes_PowerModeChanged; ;
+
 
     if (activerTimer) {
       _timerSauvegarde.Tick += SauvegardeEnergie_Tick;
@@ -58,6 +64,22 @@ public partial class MainViewModel: ObservableObject {
     }
 
     CurrentViewModel = _dashboardViewModel;
+  }
+
+  private void PowerModes_PowerModeChanged(object? sender,PowerModeChangedEventArgs e) {
+    switch (e.Mode) {
+      case PowerModes.Suspend:
+        _historiqueEnergieService.CreerReleve(TypeReleveEnergie.DernierAvantSuspension);
+        _energieService.SauvegarderEnergies();
+        break;
+      case PowerModes.Resume:
+        _energieService.ReprendreMesuresApresVeille();
+        _historiqueEnergieService.CreerReleve(TypeReleveEnergie.PremierApresReprise);
+        break;
+      default:
+        return;
+    }
+    _historiqueEnergieService.SauvegarderHistorique();
   }
 
   private readonly DispatcherTimer _timerSauvegarde = new() {
@@ -70,6 +92,9 @@ public partial class MainViewModel: ObservableObject {
     _energieService.SauvegarderEnergies();
 
     _energyViewModel.ActualiserPuissance();
+
+    _historiqueEnergieService.CreerReleve();
+    _historiqueEnergieService.SauvegarderHistorique();
   }
 
 
@@ -140,10 +165,16 @@ public partial class MainViewModel: ObservableObject {
     fenetre.ShowDialog();
   }
 
-  public void SauvegarderEnergies() {
+  public void SauvegarderEnergies(TypeReleveEnergie typeReleve = TypeReleveEnergie.Normal) {
     _etatEquipementsService.SauvegarderEtatEquipements();
-    _energieService.ActualiserConsommation_kWh();
-    _energieService.ActualiserConsommationParPiece_kWh();
+    _historiqueEnergieService.CreerReleve(typeReleve);
     _energieService.SauvegarderEnergies();
+    _historiqueEnergieService.SauvegarderHistorique();
+  }
+
+  public void DemarrerMesures(TypeReleveEnergie typeReleve = TypeReleveEnergie.Normal) {
+    _energieService.ReprendreMesuresApresVeille();
+    _historiqueEnergieService.CreerReleve(typeReleve);
+    _historiqueEnergieService.SauvegarderHistorique();
   }
 }

@@ -140,4 +140,10 @@ public class EnergieService {
           $"Détail : {ex.Message}",ex);
     }
   }
+
+  public void ReprendreMesuresApresVeille() {
+    _dernierCalcul = _dernierCalculParPiece = _horloge();
+    _dernierePuissance_W = CalculerPuissanceTotale_W();
+    _dernierePuissanceParPicece_W = new(CalculerPuissanceParPiece_W());
+  }
 }

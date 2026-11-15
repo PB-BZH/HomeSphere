@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Windows;
+using HomeSphere.Core.Enums;
 using HomeSphere.Wpf.ViewModels;
 
 namespace HomeSphere.Wpf.Views;
@@ -14,6 +15,11 @@ public partial class MainWindow: Window {
 
   private void Window_Closing(object? sender,CancelEventArgs e) {
     if (DataContext is MainViewModel viewModel)
-      viewModel.SauvegarderEnergies();
+      viewModel.SauvegarderEnergies(TypeReleveEnergie.DernierAvantArret);
+  }
+
+  private void Window_Loaded(object? sender,RoutedEventArgs e) {
+    if (DataContext is MainViewModel viewModel)
+      viewModel.DemarrerMesures(TypeReleveEnergie.PremierApresDemarrage);
   }
 }

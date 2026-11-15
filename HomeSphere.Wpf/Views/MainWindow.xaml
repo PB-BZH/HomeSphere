@@ -11,7 +11,8 @@
         Title="HomeSphere Studio"
         MinHeight="700"
         MinWidth="1100"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">

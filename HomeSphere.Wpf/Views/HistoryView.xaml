@@ -9,9 +9,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="0.8*" />
-            <RowDefinition Height="0.8*" />
-            <RowDefinition Height="0.4*" />
+            <RowDefinition Height="0.6*" />
+            <RowDefinition Height="0.6*" />
+            <RowDefinition Height="0.5*" />
             <RowDefinition Height="0.8*" />
         </Grid.RowDefinitions>
 
@@ -19,7 +19,8 @@
                    Text="Historique énergétique"
                    Style="{StaticResource SectionTitleStyle}"
                    Margin="10" />
-        <StackPanel Orientation="Horizontal" Grid.Row="1"
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
                     Margin="10">
 
             <TextBlock Text="Du :"
@@ -49,128 +50,241 @@
                        FontWeight="Bold"
                        VerticalAlignment="Center" />
         </StackPanel>
-        <DataGrid Grid.Row="2"
-                  ItemsSource="{Binding RelevesFiltres}"
-                  AutoGenerateColumns="False"
-                  Background="{StaticResource PanelBrush}"
-                  Foreground="{StaticResource TextPrimaryBrush}"
-                  RowBackground="{StaticResource PanelBrush}"
-                  AlternatingRowBackground="{StaticResource PanelSecondaryBrush}"
-                  AlternationCount="2"
-                  VerticalScrollBarVisibility="Auto">
+        <DockPanel Grid.Row="2">
 
-            <!-- Tes trois colonnes existantes restent ici -->
+            <TextBlock Text="Relevés énergétiques"
+                       DockPanel.Dock="Top"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="10,5,0,5" />
+            <DataGrid ItemsSource="{Binding RelevesFiltres}"
+                      AutoGenerateColumns="False"
+                      Background="{StaticResource PanelBrush}"
+                      Foreground="{StaticResource TextPrimaryBrush}"
+                      RowBackground="{StaticResource PanelBrush}"
+                      AlternatingRowBackground="{StaticResource PanelSecondaryBrush}"
+                      AlternationCount="2"
+                      VerticalScrollBarVisibility="Auto">
 
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background"
-                            Value="{StaticResource PanelSecondaryBrush}" />
-                    <Setter Property="Foreground"
-                            Value="{StaticResource TextPrimaryBrush}" />
-                    <Setter Property="BorderBrush"
-                            Value="{StaticResource PanelBorderBrush}" />
-                    <Setter Property="Padding"
-                            Value="10,8" />
-                    <Setter Property="FontWeight"
-                            Value="Bold" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Date et heure"
-                                    Binding="{Binding Horodatage, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
-                                    Width="*" />
+                <!-- Tes trois colonnes existantes restent ici -->
 
-                <DataGridTextColumn Header="Puissance (W)"
-                                    Binding="{Binding PuissanceTotale_W, StringFormat={}{0:N0}}"
-                                    Width="*" />
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background"
+                                Value="{StaticResource PanelSecondaryBrush}" />
+                        <Setter Property="Foreground"
+                                Value="{StaticResource TextPrimaryBrush}" />
+                        <Setter Property="BorderBrush"
+                                Value="{StaticResource PanelBorderBrush}" />
+                        <Setter Property="Padding"
+                                Value="10,8" />
+                        <Setter Property="FontWeight"
+                                Value="Bold" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date et heure"
+                                        Binding="{Binding Horodatage, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
+                                        Width="*" />
 
-                <DataGridTextColumn Header="Énergie cumulée (kWh)"
-                                    Binding="{Binding EnergieTotaleConsommee_kWh, StringFormat={}{0:N4}}"
-                                    Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
-        
-        <DataGrid Grid.Row="3"
-                  ItemsSource="{Binding ConsommationsParIntervalleFiltrees}"
-                  AutoGenerateColumns="False"
-                  Background="{StaticResource PanelBrush}"
-                  Foreground="{StaticResource TextPrimaryBrush}"
-                  RowBackground="{StaticResource PanelBrush}"
-                  AlternatingRowBackground="{StaticResource PanelSecondaryBrush}"
-                  AlternationCount="2"
-                  VerticalScrollBarVisibility="Auto">
+                    <DataGridTextColumn Header="Puissance (W)"
+                                        Binding="{Binding PuissanceTotale_W, StringFormat={}{0:N0}}"
+                                        Width="*" />
 
-            <!-- Tes trois colonnes existantes restent ici -->
+                    <DataGridTextColumn Header="Énergie cumulée (kWh)"
+                                        Binding="{Binding EnergieTotaleConsommee_kWh, StringFormat={}{0:N4}}"
+                                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <DockPanel Grid.Row="3">
 
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background"
-                            Value="{StaticResource PanelSecondaryBrush}" />
-                    <Setter Property="Foreground"
-                            Value="{StaticResource TextPrimaryBrush}" />
-                    <Setter Property="BorderBrush"
-                            Value="{StaticResource PanelBorderBrush}" />
-                    <Setter Property="Padding"
-                            Value="10,8" />
-                    <Setter Property="FontWeight"
-                            Value="Bold" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Début"
-                                    Binding="{Binding Debut, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
-                                    Width="*" />
+            <TextBlock Text="Consommations par intervalle"
+                       DockPanel.Dock="Top"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="10,5,0,5" />
+            <DataGrid ItemsSource="{Binding ConsommationsParIntervalleFiltrees}"
+                      AutoGenerateColumns="False"
+                      Background="{StaticResource PanelBrush}"
+                      Foreground="{StaticResource TextPrimaryBrush}"
+                      RowBackground="{StaticResource PanelBrush}"
+                      AlternatingRowBackground="{StaticResource PanelSecondaryBrush}"
+                      AlternationCount="2"
+                      VerticalScrollBarVisibility="Auto">
 
-                <DataGridTextColumn Header="Fin"
-                                    Binding="{Binding Fin, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
-                                    Width="*" />
+                <!-- Tes trois colonnes existantes restent ici -->
 
-                <DataGridTextColumn Header="Énergie consommée (kWh)"
-                                    Binding="{Binding EnergieConsommee_kWh, StringFormat={}{0:N4}}"
-                                    Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid Grid.Row="4"
-                  ItemsSource="{Binding ConsommationsJournalieres}"
-                  AutoGenerateColumns="False"
-                  Background="{StaticResource PanelBrush}"
-                  Foreground="{StaticResource TextPrimaryBrush}"
-                  RowBackground="{StaticResource PanelBrush}"
-                  AlternatingRowBackground="{StaticResource PanelSecondaryBrush}"
-                  AlternationCount="2"
-                  VerticalScrollBarVisibility="Auto">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background"
+                                Value="{StaticResource PanelSecondaryBrush}" />
+                        <Setter Property="Foreground"
+                                Value="{StaticResource TextPrimaryBrush}" />
+                        <Setter Property="BorderBrush"
+                                Value="{StaticResource PanelBorderBrush}" />
+                        <Setter Property="Padding"
+                                Value="10,8" />
+                        <Setter Property="FontWeight"
+                                Value="Bold" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Début"
+                                        Binding="{Binding Debut, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
+                                        Width="*" />
 
-            <!-- Tes trois colonnes existantes restent ici -->
+                    <DataGridTextColumn Header="Fin"
+                                        Binding="{Binding Fin, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}"
+                                        Width="*" />
 
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background"
-                            Value="{StaticResource PanelSecondaryBrush}" />
-                    <Setter Property="Foreground"
-                            Value="{StaticResource TextPrimaryBrush}" />
-                    <Setter Property="BorderBrush"
-                            Value="{StaticResource PanelBorderBrush}" />
-                    <Setter Property="Padding"
-                            Value="10,8" />
-                    <Setter Property="FontWeight"
-                            Value="Bold" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Date"
-                                    Binding="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}"
-                                    Width="*" />
+                    <DataGridTextColumn Header="Consommation de l'intervalle (kWh)"
+                                        Binding="{Binding EnergieConsommee_kWh, StringFormat={}{0:N4}}"
+                                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <DockPanel Grid.Row="4">
 
-                <DataGridTextColumn Header="Énergie consommée (kWh)"
-                                    Binding="{Binding ConsommationJournaliere_kWh, StringFormat={}{0:N4}}"
-                                    Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
+            <TextBlock Text="Consommations journalieres"
+                       DockPanel.Dock="Top"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="10,5,0,5" />
+            <DataGrid ItemsSource="{Binding ConsommationsJournalieres}"
+                      AutoGenerateColumns="False"
+                      Background="{StaticResource PanelBrush}"
+                      Foreground="{StaticResource TextPrimaryBrush}"
+                      RowBackground="{StaticResource PanelBrush}"
+                      AlternatingRowBackground="{StaticResource PanelSecondaryBrush}"
+                      AlternationCount="2"
+                      VerticalScrollBarVisibility="Auto">
+
+                <!-- Tes trois colonnes existantes restent ici -->
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background"
+                                Value="{StaticResource PanelSecondaryBrush}" />
+                        <Setter Property="Foreground"
+                                Value="{StaticResource TextPrimaryBrush}" />
+                        <Setter Property="BorderBrush"
+                                Value="{StaticResource PanelBorderBrush}" />
+                        <Setter Property="Padding"
+                                Value="10,8" />
+                        <Setter Property="FontWeight"
+                                Value="Bold" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date"
+                                        Binding="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}"
+                                        Width="*" />
+
+                    <DataGridTextColumn Header="Énergie consommée (kWh)"
+                                        Binding="{Binding ConsommationJournaliere_kWh, StringFormat={}{0:N4}}"
+                                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
         <Grid Grid.Row="5">
-            <lvc:CartesianChart Series="{Binding Series}"
-                                XAxes="{Binding XAxes}" 
-                                YAxes="{Binding YAxes}"
-                                Background="{StaticResource PanelBrush}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    BorderBrush="#64748B"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Margin="0,0,5,0"
+                    Padding="5">
+
+                <DockPanel>
+                    <TextBlock Text="Évolution de la puissance"
+                               DockPanel.Dock="Top"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Margin="10,5,0,5" />
+
+                    <lvc:CartesianChart Series="{Binding Series}"
+                                        XAxes="{Binding XAxes}"
+                                        YAxes="{Binding YAxes}"
+                                        Grid.Column="0"
+                                        Background="{StaticResource PanelBrush}" />
+                </DockPanel>
+            </Border>
+            <Border Grid.Column="1"
+                    BorderBrush="#64748B"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Margin="0,0,5,0"
+                    Padding="5">
+
+                <TabControl Background="Transparent"
+                            BorderThickness="0">
+
+                    <TabItem Header="Jour">
+                        <DockPanel Grid.Row="1">
+
+                            <TextBlock Text="Consommations journalières"
+                                       DockPanel.Dock="Top"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Margin="10,5,0,5" />
+
+
+                            <lvc:CartesianChart Grid.Column="1"
+                                                Series="{Binding SeriesJournalieres}"
+                                                XAxes="{Binding XAxesJournalieres}"
+                                                Background="{StaticResource PanelBrush}"
+                                                YAxes="{Binding YAxesJournalieres}" />
+
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Semaine">
+                        <DockPanel Grid.Row="1">
+
+                            <TextBlock Text="Consommations hebdomadaires"
+                                       DockPanel.Dock="Top"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Margin="10,5,0,5" />
+
+
+                            <lvc:CartesianChart Series="{Binding SeriesHebdomadaires}"
+                                                XAxes="{Binding XAxesHebdomadaires}"
+                                                YAxes="{Binding YAxesHebdomadaires}"
+                                                Background="{StaticResource PanelBrush}" />
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Mois">
+                        <DockPanel Grid.Row="1">
+
+                            <TextBlock Text="Consommations mensuelles"
+                                       DockPanel.Dock="Top"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Margin="10,5,0,5" />
+
+
+                            <lvc:CartesianChart Grid.Column="1"
+                                                Series="{Binding SeriesMensuelles}"
+                                                XAxes="{Binding XAxesMensuelles}"
+                                                Background="{StaticResource PanelBrush}"
+                                                YAxes="{Binding YAxesMensuelles}" />
+
+                        </DockPanel>
+                    </TabItem>
+                </TabControl>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>

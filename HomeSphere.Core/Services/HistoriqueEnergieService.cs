@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using HomeSphere.Core.Enums;
 using HomeSphere.Core.Models;
@@ -251,5 +252,61 @@ public class HistoriqueEnergieService {
     }
 
     return consommationJournalieres.OrderBy(c => c.Date).ToList();
+  }
+
+  public List<ConsommationHebdomadaire> CalculerConsommationsHebdomadaires() {
+    List<ConsommationHebdomadaire> consommationHebdomadaires = [];
+    Dictionary<(int Annee,int Semaine),double> consommationsParSemaine = [];
+
+    List<ConsommationJournaliere> listeConsommationJournaliere = CalculerConsommationsJournalieres();
+
+    for (int i = 0;i < listeConsommationJournaliere.Count;i++) {
+      DateOnly date = listeConsommationJournaliere[i].Date;
+      int semaine = ISOWeek.GetWeekOfYear(date);
+      int anneeSemaine = ISOWeek.GetYear(date);
+      var cle = (anneeSemaine,semaine);
+      consommationsParSemaine[cle] = consommationsParSemaine.GetValueOrDefault(cle) + listeConsommationJournaliere[i].ConsommationJournaliere_kWh;
+    }
+
+    foreach (var element in consommationsParSemaine) {
+      consommationHebdomadaires.Add(new ConsommationHebdomadaire {
+        Annee = element.Key.Annee,
+        Semaine = element.Key.Semaine,
+        ConsommationHebdomadaire_kWh = element.Value
+      });
+    }
+
+    return consommationHebdomadaires
+        .OrderBy(c => c.Annee)
+        .ThenBy(c => c.Semaine)
+        .ToList();
+  }
+
+  public List<ConsommationMensuelle> CalculerConsommationsMensuelles() {
+    List<ConsommationMensuelle> consommationsMensuelles = [];
+    Dictionary<(int Annee,int Mois),double> consommationsParMois = [];
+
+    List<ConsommationJournaliere> listeConsommationJournaliere = CalculerConsommationsJournalieres();
+
+    for (int i = 0;i < listeConsommationJournaliere.Count;i++) {
+      DateOnly date = listeConsommationJournaliere[i].Date;
+      int annee = date.Year;
+      int mois = date.Month;
+      var cle = (annee,mois);
+      consommationsParMois[cle] = consommationsParMois.GetValueOrDefault(cle) + listeConsommationJournaliere[i].ConsommationJournaliere_kWh;
+    }
+
+    foreach (var element in consommationsParMois) {
+      consommationsMensuelles.Add(new ConsommationMensuelle {
+        Annee = element.Key.Annee,
+        Mois = element.Key.Mois,
+        ConsommationMensuelle_kWh = element.Value
+      });
+    }
+
+    return consommationsMensuelles
+        .OrderBy(c => c.Annee)
+        .ThenBy(c => c.Mois)
+        .ToList();
   }
 }

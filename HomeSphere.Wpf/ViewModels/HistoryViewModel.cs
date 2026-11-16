@@ -17,6 +17,8 @@ class HistoryViewModel: ObservableObject {
   private readonly HistoriqueEnergieService _historiqueEnergieService;
   public IReadOnlyList<ReleveEnergie> Releves => _historiqueEnergieService.Releves;
   public List<ConsommationJournaliere> ConsommationsJournalieres => _historiqueEnergieService.CalculerConsommationsJournalieres();
+  public List<ConsommationHebdomadaire> ConsommationsHebdomadaires => _historiqueEnergieService.CalculerConsommationsHebdomadaires();
+  public List<ConsommationMensuelle> ConsommationsMensuelles => _historiqueEnergieService.CalculerConsommationsMensuelles();
   public IEnumerable<ReleveEnergie> RelevesFiltres =>
   Releves
       .Where(r => r.Horodatage >= new DateTimeOffset(DateDebut)
@@ -79,6 +81,75 @@ class HistoryViewModel: ObservableObject {
     }
   }
 
+  public ISeries[] SeriesJournalieres { get; set; } = [
+      new ColumnSeries<double> {
+        Name = "Consommation journalière"
+    }
+  ];
+
+  public ISeries[] SeriesHebdomadaires { get; set; } = [
+      new ColumnSeries<double> {
+        Name = "Consommation par semaine"
+    }
+  ];
+
+  public ISeries[] SeriesMensuelles { get; set; } = [
+      new ColumnSeries<double> {
+        Name = "Consommation par mois"
+    }
+  ];
+
+  public Axis[] XAxesJournalieres { get; set; } = [
+      new Axis {
+        Labels = [],
+        LabelsRotation = 0,
+        LabelsPaint = new SolidColorPaint(SKColors.White)
+    }
+  ];
+
+  public Axis[] YAxesJournalieres { get; set; } = [
+      new Axis {
+        Name = "Énergie (kWh)",
+        LabelsPaint = new SolidColorPaint(SKColors.White),
+        NamePaint = new SolidColorPaint(SKColors.White),
+        MinLimit = 0
+    }
+  ];
+
+  public Axis[] XAxesHebdomadaires { get; set; } = [
+      new Axis {
+        Labels = [],
+        LabelsRotation = 0,
+        LabelsPaint = new SolidColorPaint(SKColors.White)
+    }
+  ];
+
+  public Axis[] YAxesHebdomadaires { get; set; } = [
+      new Axis {
+        Name = "Énergie (kWh)",
+        LabelsPaint = new SolidColorPaint(SKColors.White),
+        NamePaint = new SolidColorPaint(SKColors.White),
+        MinLimit = 0
+    }
+  ];
+
+  public Axis[] XAxesMensuelles { get; set; } = [
+      new Axis {
+        Labels = [],
+        LabelsRotation = 0,
+        LabelsPaint = new SolidColorPaint(SKColors.White)
+    }
+  ];
+
+  public Axis[] YAxesMensuelles { get; set; } = [
+      new Axis {
+        Name = "Énergie (kWh)",
+        LabelsPaint = new SolidColorPaint(SKColors.White),
+        NamePaint = new SolidColorPaint(SKColors.White),
+        MinLimit = 0
+    }
+  ];
+
   public HistoryViewModel(Core.HomeSphere homeSphere,HistoriqueEnergieService historiqueEnergieService) {
     _homeSphere = homeSphere;
     _historiqueEnergieService = historiqueEnergieService;
@@ -108,11 +179,62 @@ class HistoryViewModel: ObservableObject {
     ];
 
     _historiqueEnergieService.NouveauReleve += TraiterNouveauReleve;
+    ActualiserGraphiqueJournalier();
+    ActualiserGraphiqueHebdomadaire();
+    ActualiserGraphiqueMensuelle();
   }
+
+  private void ActualiserGraphiqueJournalier() {
+    List<ConsommationJournaliere> consommations = ConsommationsJournalieres;
+
+    double[] valeurs = consommations
+        .Select(c => c.ConsommationJournaliere_kWh)
+        .ToArray();
+
+    ((ColumnSeries<double>)SeriesJournalieres[0]).Values = valeurs;
+
+    XAxesJournalieres[0].Labels = consommations
+    .Select(c => c.Date.ToString("dd/MM"))
+    .ToArray();
+  }
+
+  private void ActualiserGraphiqueHebdomadaire() {
+    List<ConsommationHebdomadaire> consommations = ConsommationsHebdomadaires;
+
+    double[] valeurs = consommations
+        .Select(c => c.ConsommationHebdomadaire_kWh)
+        .ToArray();
+
+    ((ColumnSeries<double>)SeriesHebdomadaires[0]).Values = valeurs;
+
+    XAxesHebdomadaires[0].Labels = consommations
+      .Select(c => $"S{c.Semaine:00}/{c.Annee}")
+      .ToArray();
+  }
+
+  private void ActualiserGraphiqueMensuelle() {
+    List<ConsommationMensuelle> consommations = ConsommationsMensuelles;
+
+    double[] valeurs = consommations
+        .Select(c => c.ConsommationMensuelle_kWh)
+        .ToArray();
+
+    ((ColumnSeries<double>)SeriesMensuelles[0]).Values = valeurs;
+
+    XAxesMensuelles[0].Labels = consommations
+      .Select(c => $"{c.Mois:00}/{c.Annee}")
+      .ToArray();
+  }
+
 
   private void TraiterNouveauReleve(ReleveEnergie releve) {
     AjouterPointGraphique(releve);
     OnPropertyChanged(nameof(ConsommationsJournalieres));
+    OnPropertyChanged(nameof(RelevesFiltres));
+    OnPropertyChanged(nameof(ConsommationsParIntervalleFiltrees));
+    ActualiserGraphiqueJournalier();
+    ActualiserGraphiqueHebdomadaire();
+    ActualiserGraphiqueMensuelle();
   }
 
   private void ActualiserPointsGraphique() {

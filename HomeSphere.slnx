@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="HomeSphere.Api/HomeSphere.Api.csproj" Id="377ac9f8-58ac-47c6-974d-5f81f25f28fc" />
   <Project Path="HomeSphere.Core/HomeSphere.Core.csproj" />
   <Project Path="HomeSphere.Maui/HomeSphere.Maui.csproj" Id="17bcdc4d-3d68-42f5-b2e0-e3cd2dd96d9f" />
   <Project Path="HomeSphere.Tests/HomeSphere.Tests.csproj" Id="9e15d648-444f-4375-ae04-bb21ed0c1c49" />

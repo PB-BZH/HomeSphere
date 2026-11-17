@@ -58,30 +58,28 @@ public class EtatEquipementsService {
     if (etatsParPiece == null)
       return;
 
-    foreach (var entree in etatsParPiece) {
-      foreach (Piece piece in _homeSphere.maisons.SelectMany(m => m.Pieces)) {
-        if (!etatsParPiece.TryGetValue(piece.Id,out List<EtatEquipement>? etatsEquipements))
+    foreach (Piece piece in _homeSphere.maisons.SelectMany(m => m.Pieces)) {
+      if (!etatsParPiece.TryGetValue(piece.Id,out List<EtatEquipement>? etatsEquipements))
+        continue;
+      foreach (Equipement equipement in piece.Equipements) {
+        EtatEquipement? etat = etatsEquipements.FirstOrDefault(e => e.EquipementId == equipement.Id);
+
+        if (etat is null)
           continue;
-        foreach (Equipement equipement in piece.Equipements) {
-          EtatEquipement? etat = etatsEquipements.FirstOrDefault(e => e.EquipementId == equipement.Id);
 
-          if (etat is null)
-            continue;
+        if (equipement is VoletRoulant volet && etat.Ouverture is int ouverture)
+          volet.Ouverture = ouverture;
 
-          if (equipement is VoletRoulant volet && etat.Ouverture is int ouverture)
-            volet.Ouverture = ouverture;
+        if (equipement is Thermometre thermometre) {
+          if (etat.Temperature is double temperature)
+            thermometre.Temperature = temperature;
 
-          if (equipement is Thermometre thermometre) {
-            if (etat.Temperature is double temperature)
-              thermometre.Temperature = temperature;
-
-            if (etat.TemperatureReference is double reference)
-              thermometre.TemperatureReference = reference;
-          }
-
-          equipement.EstAllume = etat.EstAllume;
-          equipement.EstConnecte = etat.EstConnecte;
+          if (etat.TemperatureReference is double reference)
+            thermometre.TemperatureReference = reference;
         }
+
+        equipement.EstAllume = etat.EstAllume;
+        equipement.EstConnecte = etat.EstConnecte;
       }
     }
   }

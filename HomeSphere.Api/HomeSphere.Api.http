@@ -1,0 +1,75 @@
+@HomeSphere.Api_HostAddress = https://localhost:7181
+@LampeSalon = 910bd991-0729-3ad5-ef60-4036ef032635
+@PriseSalon = 901019fb-e8ee-6410-1528-083a00f42f2a
+@Salon = fea78b8f-5b63-57e7-3f10-a7a8cd710460
+
+GET {{HomeSphere.Api_HostAddress}}/api/status
+Accept: application/json
+
+###
+
+GET {{HomeSphere.Api_HostAddress}}/api/maisons
+Accept: application/json
+
+###
+
+### Consulter les équipements du salon
+GET {{HomeSphere.Api_HostAddress}}/api/pieces/{{Salon}}/equipements
+Accept: application/json
+
+###
+
+### Basculer la lampe du salon
+POST {{HomeSphere.Api_HostAddress}}/api/equipements/{{LampeSalon}}/basculer
+
+### Basculer la prise du salon
+POST {{HomeSphere.Api_HostAddress}}/api/equipements/{{PriseSalon}}/basculer
+###
+
+### Consulter la puissance totale
+GET {{HomeSphere.Api_HostAddress}}/api/energie/puissance
+Accept: application/json
+
+###
+
+### Consulter la consommation énergétique cumulée
+GET {{HomeSphere.Api_HostAddress}}/api/energie/consommation
+Accept: application/json
+
+###
+
+### Consulter l'historique énergétique
+GET {{HomeSphere.Api_HostAddress}}/api/energie/historique
+Accept: application/json
+
+###
+
+### Historique énergétique filtré
+GET {{HomeSphere.Api_HostAddress}}/api/energie/historique?debut=2026-11-17T00:00:00%2B01:00&fin=2026-11-18T00:00:00%2B01:00
+Accept: application/json
+
+###
+
+### Consommations journalières
+GET {{HomeSphere.Api_HostAddress}}/api/energie/consommations/journalieres
+Accept: application/json
+
+###
+
+### Consommations hebdomadaires
+GET {{HomeSphere.Api_HostAddress}}/api/energie/consommations/hebdomadaires
+Accept: application/json
+
+###
+
+### Consommations mensuelles
+GET {{HomeSphere.Api_HostAddress}}/api/energie/consommations/mensuelles
+Accept: application/json
+
+###
+
+### Consommations par intervalle
+GET {{HomeSphere.Api_HostAddress}}/api/energie/consommations/intervalles
+Accept: application/json
+
+###
